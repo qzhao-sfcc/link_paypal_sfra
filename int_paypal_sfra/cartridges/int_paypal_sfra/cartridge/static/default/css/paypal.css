@@ -1,0 +1,45 @@
+/* TODO make normal style */
+.js_paypal_error {
+  display: none; }
+
+.paypal-cart-buttons-container {
+  display: block; }
+
+.paypal-cart-buttons-container a {
+  display: inline-block;
+  vertical-align: middle; }
+
+.paypal-cart-button {
+  padding: 0 !important;
+  margin: 0 0 10px 0;
+  min-height: 45px;
+  background: 50% 10px url(../images/ajaxLoader.gif) no-repeat !important; }
+
+.paypal-cart-credit-button {
+  background: #003087 50% 40% url(../images/ajaxLoaderWhiteBlue.gif) no-repeat !important; }
+
+.paypal-checkout-button {
+  min-height: 37px;
+  padding-top: 8px; }
+
+.paypal-mini-logo {
+  display: inline-block;
+  width: 60px;
+  height: 37px;
+  background: url(../images/paypal_mini_logo.png) no-repeat;
+  background-size: 100% 100%;
+  border: 1px solid #f1f1f1;
+  vertical-align: middle; }
+
+.paypal-email {
+  line-height: 37px; }
+
+.paypal-email .paypal-mini-logo {
+  margin-right: 10px; }
+
+.paypal-cart-ba-button {
+  padding-bottom: 10px;
+  text-align: right; }
+
+.paypal-cart-ba-button .paypal-cart-button {
+  margin-bottom: 0; }

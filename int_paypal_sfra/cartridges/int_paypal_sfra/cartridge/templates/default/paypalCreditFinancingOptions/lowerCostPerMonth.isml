@@ -1,0 +1,8 @@
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('PP_ShowCreditFinancialBanners') && paypalCalculatedCost && paypalCalculatedCost.isAvailable()}">
+    <div class="paypal-fo-plp-label js_paypal_fo_lower_price_label" data-url="${URLUtils.url('PaypalCreditFinancingOptions-GetLowestPossibleMonthlyCost', 'value', paypalCalculatedCost.value, 'currencyCode', paypalCalculatedCost.currencyCode, 'countryCode', dw.util.Locale.getLocale(request.locale).country)}">
+        ${Resource.msgf('paypal.creditFinancingOptions.productTile.lowerMonthCost.ph', 'locale', '', 'X.XX')}
+    </div>
+    <script>
+        window.paypalCreditFinancingOptions && window.paypalCreditFinancingOptions.updateLabelValues && window.paypalCreditFinancingOptions.updateLabelValues();
+    </script>
+</isif>

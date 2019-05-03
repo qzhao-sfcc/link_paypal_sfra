@@ -1,0 +1,22 @@
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('PP_ShowCreditFinancialBanners') && paypalCalculatedCost && paypalCalculatedCost.isAvailable()}">
+    <isscript>
+        var lowerPricePerMonth = require('*/cartridge/scripts/paypal/paypalCreditFinancingOptionsHelper').getLowestPossibleMonthlyCost(paypalCalculatedCost);
+    </isscript>
+    <isif condition="${!lowerPricePerMonth.error}">
+        <div class="paypal-fo-banner js_paypal_fo_banner">
+            <div class="paypal-fo-banner-ins">
+                <div class="paypal-fo-banner-content js_paypal_fo_banner_content">
+                    <div class="paypal-fo-banner-logo"><div class="paypal-fo-banner-logo-ins"><div class="paypal-fo-banner-logo-ins2">
+                        <img src="${URLUtils.staticURL('/images/paypal_credit_v.png')}" alt="${Resource.msg('paypal.creditFinancingOptions.banner.imgAlt', 'locale', '')}" />
+                    </div></div></div>
+                    <div class="paypal-fo-banner-text">
+                        <isprint value="${Resource.msgf('paypal.creditFinancingOptions.banner.text', 'locale', '', '<b class="js_paypal_fo_banner_value">' + lowerPricePerMonth.formatted + '</b>')}" encoding="xmlcomment" />
+                        <span class="js_paypal_fo_show_allOptionsBanner">${Resource.msg('paypal.creditFinancingOptions.banner.clickForDetails', 'locale', '')}</span>
+                    </div>
+                </div>
+                <isset name="paypalIsHideAllOptionsBanner" value=${true} scope="page"/>
+                <isinclude template="paypalCreditFinancingOptions/allOptionsBanner"/>
+            </div>
+        </div>
+    </isif>
+</isif>

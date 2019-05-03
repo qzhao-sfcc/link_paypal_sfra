@@ -1,0 +1,84 @@
+<isif condition="${dw.system.Site.getCurrent().getCustomPreferenceValue('PP_ShowCreditFinancialBanners') && paypalCalculatedCost && paypalCalculatedCost.isAvailable()}">
+    <isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+        assets.addJs('/js/paypalCreditFinancingOptions.js');
+        assets.addCss('/css/paypalCreditFinancingOptions.css');
+
+        var allOptionsBannerData = require('*/cartridge/scripts/paypal/paypalCreditFinancingOptionsHelper').getDataForAllOptionsBanner(paypalCalculatedCost);
+    </isscript>
+    <isif condition="${!allOptionsBannerData.error}">
+        <div class="paypal-fo-all-options-banner js_paypal_fo_allOptionsBanner ${typeof paypalIsHideAllOptionsBanner === 'boolean' && paypalIsHideAllOptionsBanner ? 'js_paypal_fo_allOptionsBanner_hide' : 'paypal-fo-all-options-banner-without-wrap'}" data-url="${URLUtils.url('PaypalCreditFinancingOptions-GetAllOptionsData', 'currencyCode', paypalCalculatedCost.currencyCode)}">
+            <div class="paypal-fo-all-options-banner-ins">
+                <div class="paypal-fo-all-options-banner-left-part">
+                    <div class="paypal-fo-all-options-banner-left-part-ins">
+                        <div class="paypal-fo-all-options-banner-logo">
+                            <img src="${URLUtils.staticURL('/images/paypal_credit_h.png')}" alt="${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.leftPart.imgAlt', 'locale', '')}" />
+                        </div>
+                        <div class="paypal-fo-all-options-banner-title">
+                            ${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.leftPart.title', 'locale', '')}
+                        </div>
+                        <div class="paypal-fo-all-options-banner-months-menu">
+                            <ul>
+                                <isloop items="${allOptionsBannerData.monthSet}" var="months" status="status">
+                                    <li class="js_paypal_fo_allOptionsBanner_tab ${status.last ? 'js_paypal_active' : ''}" data-value="${months+''}"><span>${Resource.msgf('paypal.creditFinancingOptions.allOptionsBanner.leftPart.months', 'locale', '', months)}</span></li>
+                                </isloop>
+                            </ul>
+                        </div>
+                        <isloop items="${allOptionsBannerData.monthSet}" var="months" status="status">
+                            <div class="paypal-fo-all-options-banner-month-detail js_paypal_fo_allOptionsBanner_tab_content ${status.last ? 'js_paypal_active' : ''}" data-value="${months+''}">
+                                <table>
+                                    <tr class="paypal-fo-all-options-banner-monthly-payment">
+                                        <td class="paypal-label">${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.leftPart.monthlyPayment', 'locale', '')}</td>
+                                        <td class="paypal-value js__monthlyPayment">${dw.util.StringUtils.formatMoney(new dw.value.Money(allOptionsBannerData.options[months].monthlyPayment.value, allOptionsBannerData.options[months].monthlyPayment.currencyCode))}</td>
+                                    </tr class="paypal-fo-all-options-banner-instalment-rate">
+                                    <tr>
+                                        <td class="paypal-label">${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.leftPart.instalmentRate', 'locale', '')}</td>
+                                        <td class="paypal-value"><isprint value="${Resource.msgf('paypal.creditFinancingOptions.allOptionsBanner.leftPart.instalmentRatePercents', 'locale', '', '<span class="js__apr">' + allOptionsBannerData.options[months].apr + '</span>')}" encoding="xmlcomment" /></td>
+                                    </tr>
+                                    <tr class="paypal-fo-all-options-banner-cost-purchase">
+                                        <td class="paypal-label">${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.leftPart.costOfPurchase', 'locale', '')}</td>
+                                        <td class="paypal-value js__costOfPurchase">${dw.util.StringUtils.formatMoney(paypalCalculatedCost)}</td>
+                                    </tr>
+                                    <tr class="paypal-fo-all-options-banner-total-interest">
+                                        <td class="paypal-label">${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.leftPart.totalInterest', 'locale', '')}</td>
+                                        <td class="paypal-value js__totalCost">${dw.util.StringUtils.formatMoney(new dw.value.Money(allOptionsBannerData.options[months].totalCost.value, allOptionsBannerData.options[months].totalCost.currencyCode))}</td>
+                                    </tr>
+                                </table>
+                                <div class="paypal-fo-all-options-banner-moreinformation"><a href="${'#'}">${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.leftPart.moreInformation', 'locale', '')}</a></div>
+                            </div>
+                        </isloop>
+                    </div>
+                </div>
+                <div class="paypal-fo-all-options-banner-right-part">
+                    <div class="paypal-fo-all-options-banner-right-part-ins">
+                        <div class="paypal-fo-all-options-banner-right-part-head-text">
+                            ${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.rightPart.headText', 'locale', '')}
+                        </div>
+                        <div class="paypal-fo-all-options-banner-example">
+                            <div class="paypal-fo-all-options-banner-representative-example">
+                                ${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.rightPart.representativeExample', 'locale', '')}
+                            </div>
+                            <div class="paypal-fo-all-options-banner-purchase-rate">
+                                <isprint value="${Resource.msgf('paypal.creditFinancingOptions.allOptionsBanner.rightPart.purchaseRate', 'locale', '', '<b>' + 17.9 + '%</b>')}" encoding="xmlcomment" />
+                            </div>
+                            <div class="paypal-fo-all-options-banner-representative">
+                                <isprint value="${Resource.msgf('paypal.creditFinancingOptions.allOptionsBanner.rightPart.representative', 'locale', '', '<b>' + 17.9 + '%</b>')}" encoding="xmlcomment" />
+                            </div>
+                            <div class="paypal-fo-all-options-banner-assumed-credit-limit">
+                                <isprint value="${Resource.msgf('paypal.creditFinancingOptions.allOptionsBanner.rightPart.assumedCreditLimit', 'locale', '', '<b>' + dw.util.StringUtils.formatMoney(paypalCalculatedCost) + '</b>')}" encoding="xmlcomment" />
+                            </div>
+                        </div>
+                        <div class="paypal-fo-all-options-banner-assumed-foot">
+                            <div class="paypal-fo-all-options-banner-assumed-foot-text1">
+                                ${Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.rightPart.footText1', 'locale', '')}
+                            </div>
+                            <div class="paypal-fo-all-options-banner-assumed-foot-text2">
+                                <isprint value="${Resource.msgf('paypal.creditFinancingOptions.allOptionsBanner.rightPart.footText2', 'locale', '', '<b>' + Resource.msg('paypal.creditFinancingOptions.allOptionsBanner.rightPart.footText2.bold', 'locale', '') + '</b>')}" encoding="xmlcomment" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </isif>
+</isif>

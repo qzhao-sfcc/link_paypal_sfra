@@ -1,0 +1,12 @@
+{
+    "hooks": [
+        {
+            "name": "app.payment.processor.paypal",
+            "script": "./hooks/payment/processor/paypal"
+        },
+        {
+            "name": "app.payment.processor.paypal.ipn",
+            "script": "./hooks/ipnHook"
+        }
+    ]
+}

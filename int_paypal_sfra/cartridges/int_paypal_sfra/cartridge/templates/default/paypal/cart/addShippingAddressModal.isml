@@ -1,0 +1,194 @@
+<isscript>
+        var assets = require('*/cartridge/scripts/assets.js');
+        assets.addJs('/js/addressBook.js');
+        assets.addCss('/css/account/addressBook.css');
+    </isscript>
+<div class="modal fade" id="paypalAddShippingAddressModal" tabindex="-1" role="dialog" aria-labelledby="addDefaultShippingAddressModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="addDefaultShippingAddressModal">${Resource.msg('paypal.editdefaultshippingaddress.title','locale',null)}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+            <form
+                    action="${URLUtils.url('Paypal-HandleDefaultShippinAddress')}"
+                    class="address-form"
+                    method="POST"
+                    name="${pdict.addressForm.htmlName}"
+                    id="${pdict.addressForm.htmlName}">
+                    <!-- Name -->
+                    <div class="row">
+                        <!-- First Name -->
+                        <div class="col-6">
+                            <div class="form-group
+                                ${pdict.addressForm.firstName.mandatory === true ? 'required' : ''}">
+                                <label class="form-control-label" for="firstName">
+                                    ${pdict.addressForm.firstName.label}
+                                </label>
+                                <input type="text" class="form-control" id="firstName"
+                                    name="${pdict.addressForm.firstName.htmlName}"
+                                    maxLength="${pdict.addressForm.firstName.maxLength}"
+                                    autocomplete="given-name"
+                                    required >
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-6">
+                            <div class="form-group
+                                ${pdict.addressForm.lastName.mandatory === true ? 'required' : ''}">
+                                <label class="form-control-label" for="lastName">
+                                    ${pdict.addressForm.lastName.label}
+                                </label>
+                                <input type="text" class="form-control" id="lastName"
+                                    name="${pdict.addressForm.lastName.htmlName}"
+                                             maxLength="${pdict.addressForm.lastName.maxLength}"
+                                    autocomplete="family-name"
+                                    required >
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address 1 -->
+                    <div class="form-group
+                        ${pdict.addressForm.address1.mandatory === true ? 'required' : ''}">
+                        <label class="form-control-label" for="address1">
+                            ${pdict.addressForm.address1.label}
+                        </label>
+                        <input type="text" class="form-control" id="address1"
+                            name="${pdict.addressForm.address1.htmlName}"
+                            maxLength="${pdict.addressForm.address1.maxLength}"
+                            autocomplete="address-line1"
+                            required >
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Address 2 -->
+                    <div class="form-group
+                        ${pdict.addressForm.address2.mandatory === true ? 'required' : ''}">
+                        <label class="form-control-label" for="address2">
+                            ${pdict.addressForm.address2.label}
+                        </label>
+                        <input type="text" class="form-control" id="address2"
+                            name="${pdict.addressForm.address2.htmlName}"
+                                     maxLength="${pdict.addressForm.address2.maxLength}"
+                            autocomplete="billing address-line2">
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                    <!-- Country and State drop downs -->
+                    <div class="row">
+                        <!-- Country  -->
+                        <div class="col-6">
+                            <div class="form-group
+                                ${pdict.addressForm.country.mandatory === true ? 'required' : ''}">
+                                <label class="form-control-label" for="country">
+                                    ${pdict.addressForm.country.label}
+                                </label>
+                                <select class="form-control" id="country"
+                                    name="${pdict.addressForm.country.htmlName}"
+                                    autocomplete="country"
+                                    required >
+                                    <isloop items=${pdict.addressForm.country.options} var="country">
+                                        <option id="${country.id}" value="${country.htmlValue}" <isif condition="${country.selected}">selected</isif>>${country.label}</option>
+                                    </isloop>
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- State  -->
+                        <div class="col-6">
+                            <div class="form-group
+                                ${pdict.addressForm.states.stateCode.mandatory === true ? 'required' : ''}">
+                                <label class="form-control-label" for="state">
+                                    ${pdict.addressForm.states.stateCode.label}
+                                </label>
+                                <select class="form-control" id="state"
+                                    name="${pdict.addressForm.states.stateCode.htmlName}"
+                                    autocomplete="address-level1"
+                                    required >
+                                    <isloop items=${pdict.addressForm.states.stateCode.options} var="state">
+                                        <option id="${state.id}" value="${state.htmlValue}" <isif condition="${state.selected}">selected</isif>>${state.label || ' '}</option>
+                                    </isloop>
+                                </select>
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- City and ZIP -->
+                    <div class="row">
+                        <div class="col-6">
+                        <!-- City  -->
+                            <div class="form-group
+                                ${pdict.addressForm.city.mandatory === true ? 'required' : ''}">
+                                <label class="form-control-label" for="city">
+                                    ${pdict.addressForm.city.label}
+                                </label>
+                                <input type="text" class="form-control" id="city"
+                                    name="${pdict.addressForm.city.htmlName}"
+                                             maxLength="${pdict.addressForm.city.maxLength}"
+                                             minLength="${pdict.addressForm.city.minLength}"
+                                    autocomplete="address-level2"
+                                    required >
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+
+                        <!-- ZIP Code -->
+                        <div class="col-6">
+                            <div class="form-group
+                                ${pdict.addressForm.postalCode.mandatory === true ? 'required' : ''}">
+                                <label class="form-control-label" for="zipCode">
+                                    ${pdict.addressForm.postalCode.label}
+                                </label>
+                                <input type="text" class="form-control" id="zipCode"
+                                    name="${pdict.addressForm.postalCode.htmlName}"
+                                    pattern="${pdict.addressForm.postalCode.regEx}"
+                                    maxLength="${pdict.addressForm.postalCode.maxLength}"
+                                             minLength="${pdict.addressForm.postalCode.minLength}"
+                                    autocomplete="postal-code"
+                                    required >
+                                <div class="invalid-feedback"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form-group
+                        ${pdict.addressForm.phone.mandatory === true ? 'required' : ''}">
+                        <label class="form-control-label" for="phone">
+                            ${pdict.addressForm.phone.label}
+                        </label>
+                        <input type="text" class="form-control" id="phone"
+                            name="${pdict.addressForm.phone.htmlName}"
+                            maxLength="${pdict.addressForm.phone.maxLength}"
+                                     minLength="${pdict.addressForm.phone.minLength}"
+                            autocomplete="tel"
+                            required >
+                        <div class="invalid-feedback"></div>
+                    </div>
+
+                <input type="hidden" name="${pdict.csrf.tokenName}" value="${pdict.csrf.token}"/>
+
+                <!-- Cancel and Save Buttons -->
+                <div class="row">
+                    <div class="col-6">
+                        <a href="${URLUtils.url('Cart-Show')}" class="btn btn-block btn-outline-primary">${Resource.msg('button.cancel','account',null)}</a>
+                    </div>
+                    <div class="col-6">
+                            <button type="submit" name="save" class="btn btn-save btn-block btn-primary">${Resource.msg('button.save','account',null)}</button>
+                        </div>
+                    </div>
+
+                </form>
+                
+            </div>
+        </div>
+    </div>
+</div>

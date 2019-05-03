@@ -1,0 +1,85 @@
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('https://www.paypalobjects.com/api/checkout.js');
+    assets.addJs('/js/paypalUtils.js');
+    assets.addJs('/js/paypalMFRA.js');
+    assets.addCss('/css/paypal.css');
+</isscript>
+
+
+<div class="tab-pane paypal-content js_paypal-content" id="paypal-content" role="tabpanel" data-paypal-is-hide-continue-button="${pdict.paypal.isNeedHideContinueButton}">
+
+    <div class="js_paypal_error alert alert-danger"></div>
+
+    <isif condition="${!empty(session.custom.paypalErrorMessage) && pdict.CurrentHttpParameterMap.get('showPaypalError').booleanValue === true}">
+        <div class="error-form">
+            <isprint value="${session.custom.paypalErrorMessage}"/>
+        </div>
+    </isif>
+
+    <input type="hidden" class="form-control" name="isPaypal" value="true" disabled="disabled" />
+    <input type="hidden" class="form-control" name="${pdict.forms.billingForm.paymentMethod.htmlName}" value="PayPal">
+
+    <isif condition="${pdict.paypal.alreadyHandledToken}">
+        <div class="js_paypal-use-another-account-wrap paypal-already-handled-account">
+            <div class="paypal-email"><i class="paypal-mini-logo"></i><b>${pdict.paypal.alreadyHandledEmail}</b></div>
+            <div class="form-group custom-control custom-checkbox">
+                <input class="custom-control-input" type="checkbox" name="${pdict.paypal.form.useAnotherAccount.htmlName}" id="${pdict.paypal.form.useAnotherAccount.htmlName}" value="true">
+                <label class="custom-control-label" for="${pdict.paypal.form.useAnotherAccount.htmlName}">${Resource.msg('paypal.billing.agreement.useanotheraccount.checkbox', 'forms', null)}</label>
+            </div>
+        </div>
+        <div class="js_paypal_emailConainter form-group <isif condition=${creditFields.email.mandatory === true}>required</isif> ${creditFields.email.htmlName}">
+            <label class="form-control-label" for="email">${Resource.msg('field.customer.email','checkout',null)}</label>
+            <span class="info-icon">
+                <span class="icon">i</span>
+                <div class="tooltip">
+                    ${Resource.msg('tooltip.email','creditCard',null)}
+                </div>
+            </span>
+            <input type="text" class="form-control email" value="${pdict.order.orderEmail || ''}" name="${creditFields.email.htmlName}" required maxLength="254">
+            <div class="invalid-feedback"></div>
+        </div>
+    </isif>
+    
+    <isif condition="${customer.authenticated && pdict.paypal.prefs.PP_BillingAgreementState != 'DoNotCreate'}">
+
+        <isif condition="${pdict.paypal.isCustomerHasAnyBillingAgreement}">
+            <div class="form-group custom-control custom-checkbox">
+               <input class="custom-control-input" type="checkbox" name="${pdict.paypal.form.useCustomerBillingAgreement.htmlName}" id="${pdict.paypal.form.useCustomerBillingAgreement.htmlName}" value="true">
+               <label class="custom-control-label" for="${pdict.paypal.form.useCustomerBillingAgreement.htmlName}">
+                    <div><b>${pdict.paypal.customerBillingAgreementEmail}</b></div>
+                    <span>${Resource.msg('paypal.billing.agreement.use.checkbox', 'forms', null)}</span>
+               </label>
+               <input type="hidden" class="js_useCustomerFillingAgreementState" value="${pdict.paypal.form.useCustomerBillingAgreement.checked}" />
+            </div>
+            <isif condition="${pdict.paypal.prefs.PP_BillingAgreementState == 'BuyersChoose'}">
+                <div class="js_paypa-save-ba-wrap" style="display:${pdict.paypal.form.useCustomerBillingAgreement.checked ? 'none' : 'block'}">
+                    <div class="form-group custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" name="${pdict.paypal.form.saveBillingAgreement.htmlName}" id="${pdict.paypal.form.saveBillingAgreement.htmlName}" value="true">
+                        <label class="custom-control-label" for="${pdict.paypal.form.saveBillingAgreement.htmlName}">${Resource.msg('paypal.billing.agreement.checkbox', 'forms', null)}</label>
+                    </div>
+                </div>
+            </isif>
+            <isinclude template="paypal/fraudnet"/>
+        <iselse>
+            <isif condition="${pdict.paypal.prefs.PP_BillingAgreementState == 'BuyersChoose'}">
+                <div class="js_paypa-save-ba-wrap" style="display:${pdict.paypal.alreadyHandledToken ? 'none' : 'block'}">
+                    <div class="form-group custom-control custom-checkbox">
+                        <input class="custom-control-input" type="checkbox" name="${pdict.paypal.form.saveBillingAgreement.htmlName}" id="${pdict.paypal.form.saveBillingAgreement.htmlName}" value="true">
+                        <label class="custom-control-label" for="${pdict.paypal.form.saveBillingAgreement.htmlName}"> ${Resource.msg('paypal.billing.agreement.checkbox', 'forms', null)}</label>
+                    </div>
+                </div>
+            </isif>
+        </isif>
+
+        <div style="display:none">
+            <input type="checkbox" name="${pdict.paypal.form.expressCheckoutSetForBillingAgreement.htmlName}" id="${pdict.paypal.form.expressCheckoutSetForBillingAgreement.htmlName}" value="true">
+        </div>
+
+    </isif>
+
+    <div style="display:${!pdict.paypal.isNeedHideContinueButton ? 'none' : 'block'}">
+        <div class="paypal-checkout-button js_paypal_button_on_billing_form" data-paypal-config="${JSON.stringify(pdict.paypal.buttonConfig)}"></div>
+    </div>
+
+</div>

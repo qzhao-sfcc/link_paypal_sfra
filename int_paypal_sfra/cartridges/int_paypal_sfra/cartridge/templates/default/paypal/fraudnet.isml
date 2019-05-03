@@ -1,0 +1,12 @@
+<isif condition="${!request.custom.paypalFraudnetIncluded}">
+    <isset name="paypalFraudnetIncluded" value="true" scope="request" />
+    <isset name="paypalPageFraudnetSessionId" value="${(dw.util.UUIDUtils.createUUID()+'_'+dw.util.UUIDUtils.createUUID()).substr(0,32)}" scope="request" />
+    <isset name="paypalFraudnetSessionId" value="${request.custom.paypalPageFraudnetSessionId}" scope="session" />
+    <script class="js_paypal_fraudnet_data" type="application/json" fncls="fnparams-dede7cc5-15fd-4c75-a9f4-36c430ee3a99">
+        {
+            "f": "${request.custom.paypalPageFraudnetSessionId}",
+            "s": "SalesforceCommerceCloud_PYMNT"
+        }
+    </script>
+    <noscript><img src="https://c.paypal.com/v1/r/d/b/ns?f=${request.custom.paypalPageFraudnetSessionId}&s=SalesforceCommerceCloud_PYMNT&js=0&r=1" /></noscript>
+</isif>

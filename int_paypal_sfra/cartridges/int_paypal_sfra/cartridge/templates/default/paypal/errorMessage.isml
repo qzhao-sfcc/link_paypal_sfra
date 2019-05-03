@@ -1,0 +1,9 @@
+<iscomment>This template should be included on cart and billing pages</iscomment>
+<isif condition="${!empty(session.custom.paypalErrorMessage) && pdict.CurrentHttpParameterMap.get('showPaypalError').booleanValue === true}">
+    <div class="alert alert-danger alert-dismissible valid-cart-error fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <isprint value="${session.custom.paypalErrorMessage}"/>
+    </div>
+</isif>

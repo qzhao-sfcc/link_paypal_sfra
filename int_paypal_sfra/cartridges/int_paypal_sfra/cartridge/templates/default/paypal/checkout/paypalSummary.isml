@@ -1,0 +1,14 @@
+<div>
+    <div class="paypal-method-name">
+        ${payment.paymentMethod}
+    </div>
+    <div class="paypal-amount">
+        ${dw.util.StringUtils.formatMoney(new dw.value.Money(payment.amount, pdict.paypal.currency))}
+    </div>
+
+    <isif condition="${pdict.paypal.summaryEmail}">
+        <div class="paypal-summary-billing-additional-info">
+            ${Resource.msgf('paypal.checkout.summarybillinginfo', 'locale', null, pdict.paypal.summaryEmail)}
+        </div>
+    </isif>
+</div>

@@ -1,0 +1,7 @@
+{
+	"init": [
+		"./cartridge/scripts/service/paypalHttpNvpServiceInit.js",
+		"./cartridge/scripts/service/paypalRestServicesInit.js"
+	],
+     "hooks": "./cartridge/scripts/hooks.json"
+}

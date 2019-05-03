@@ -1,0 +1,29 @@
+<isif condition="${dw.order.PaymentMgr.getPaymentMethod('PayPal').getPaymentProcessor().getID() == 'PAYPAL'}" >
+<isscript>
+    var assets = require('*/cartridge/scripts/assets.js');
+    assets.addJs('//www.paypalobjects.com/api/checkout.js');
+    assets.addJs('/js/paypalUtils.js');
+    assets.addJs('/js/paypalMFRA.js');
+    assets.addCss('/css/paypal.css');
+</isscript>
+
+<div class="paypal-cart-buttons-container">
+    <isif condition="${pdict.paypal.prefs.PP_ShowExpressCheckoutButtonOnCart}">
+
+        <isif condition="${pdict.paypal.buttonConfig.billingAgreementFlow}">
+
+            <div class="paypal-cart-ba-button">
+                <div class="paypal-cart-button js_paypal_button" data-paypal-config="${JSON.stringify(pdict.paypal.buttonConfig)}"></div>
+                <isinclude template="paypal/cart/addShippingAddressModal"/>
+                <isinclude template="paypal/fraudnet"/>
+            </div>
+
+        <iselse>
+
+            <div class="paypal-cart-button js_paypal_button" data-paypal-config="${JSON.stringify(pdict.paypal.buttonConfig)}"></div>
+
+        </isif>
+
+    </isif>
+</div>
+</isif>
