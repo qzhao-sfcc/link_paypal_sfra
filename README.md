@@ -1,4 +1,4 @@
-# refArch_paypal_integration
+# link_paypal_sfra
 
 This is repsitory setup for paypal end to end integration with SFRA sandbox website. The idea is by pulling this repsitory following quick setup setups on both commerce cloud and paypal sandboxes. The standard website is ready to show end to end integartion.
 
@@ -15,3 +15,10 @@ NOTE:
 2. The integraiton setup in business manager should use paypal business account api key and password. Please be aware of testing environment vs production environment URL!
 
 3. To access testing transactions in paypal, please go to https://www.sandbox.paypal.com/uk/home and login with given mock buyer account and business accound accordingly.
+
+
+4. To install cartridges to the site, 
+  a. For int_paypal_sfra, copy int_paypal_sfra folder to target website folder and add standard compiling package node_modules to int_paypal_sfra folder. Build with standard command line npm run compile:js && npm run compile:scss
+  b. For bm_paypal, copy bm_paypal folder to target website folder, build the cartridge using standard npm run compile:js.
+  c. Upload both cartridges.
+  d. configure BM caridge path to be: bm_paypal:int_paypal_sfra:app_storefront_base  
